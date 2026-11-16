@@ -14,14 +14,9 @@ int main(int argc, char* argv[])
 
     for (const auto& entry : std::filesystem::directory_iterator{path})
     {
-        if (entry.is_directory() || entry.is_regular_file())
-        { 
-            std::cout << entry.path().filename() << std::endl; 
-        }
-        else 
-        {
-            continue; 
-        }
+        if (entry.path().filename().string()[0] == '.') { continue; }
+
+        std::cout << entry.path().filename() << std::endl;
     }
 
     return 0;
