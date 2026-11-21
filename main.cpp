@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdint>
 #include <string>
 #include <filesystem>
 
@@ -24,18 +25,31 @@
             e.g. has_root_directory()
 */
 
+void crawl_directory(const std::filesystem::path& path)  
+{
+    for (const auto& entry : std::filesystem::directory_iterator{path})
+    {
+        if (entry.is_directory())
+        {
+            std::cout << "directory: " << entry.path().filename().string() << std::endl;
+
+            crawl_directory(entry.path());
+        }
+        else
+        {
+            std::cout << entry.path().filename().string() << std::endl;
+        }
+    }
+}
+
 int main(int argc, char* argv[]) 
 {
-    std::string path = "."; 
+    // default path
+    std::filesystem::path path {"TestFolder"};
 
     if (argc > 1) { path = argv[1]; }
 
-    for (const auto& entry : std::filesystem::recursive_directory_iterator{path})
-    {
-        if (entry.path().filename().string()[0] == '.') { continue; }
-
-        std::cout << entry.path().filename().string() << std::endl;
-    }
+    crawl_directory(path); 
 
     return 0;
 }
