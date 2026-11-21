@@ -25,19 +25,29 @@
             e.g. has_root_directory()
 */
 
+int16_t directory_nesting_count{};
+
 void crawl_directory(const std::filesystem::path& path)  
 {
     for (const auto& entry : std::filesystem::directory_iterator{path})
     {
         if (entry.is_directory())
         {
-            std::cout << "directory: " << entry.path().filename().string() << std::endl;
+            std::cout << std::string((directory_nesting_count * 4), '-') 
+                      << entry.path().filename().string() 
+                      << std::endl;
+
+            directory_nesting_count++;
 
             crawl_directory(entry.path());
+
+            directory_nesting_count--;
         }
         else
         {
-            std::cout << entry.path().filename().string() << std::endl;
+            std::cout << std::string((directory_nesting_count * 4), '-') 
+                      << entry.path().filename().string() 
+                      << std::endl;
         }
     }
 }
