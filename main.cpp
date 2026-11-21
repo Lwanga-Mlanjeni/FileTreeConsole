@@ -7,25 +7,35 @@
 // making a file tree viewer
 // No AI
 
-/*
-
-    About <filesystem>
-
-    std::filesystem::diretory_entry - represents a directory entry, contains `path` as memeber.
-        is_directory()
-        is_regular_file()
-        
-    std::filesystem::path - represents the filepath
-        root_path()
-        filename()
-        root_directory()
-        extension()
-
-        also contains "has_something()" member functions that check if the corresponding path element is empty
-            e.g. has_root_directory()
-*/
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 int16_t directory_nesting_count{};
+
+/*
+
+|___
+
+*/
+std::string repeat_string(std::string_view string, int16_t count)
+{
+    std::string result;
+
+    result.reserve(string.size() * count);
+
+    for (int16_t i{}; i < count; ++i)
+        result += string;
+
+    return result;
+}
+
+std::string get_indentation_styling()
+{
+    std::string indent_styling = "\u2502" + std::string(3, ' ') ;
+
+    return repeat_string(indent_styling, directory_nesting_count) + "\u251C ";
+}
 
 void crawl_directory(const std::filesystem::path& path)  
 {
@@ -33,7 +43,7 @@ void crawl_directory(const std::filesystem::path& path)
     {
         if (entry.is_directory())
         {
-            std::cout << std::string((directory_nesting_count * 4), '-') 
+            std::cout << get_indentation_styling()
                       << entry.path().filename().string() 
                       << std::endl;
 
@@ -45,7 +55,9 @@ void crawl_directory(const std::filesystem::path& path)
         }
         else
         {
-            std::cout << std::string((directory_nesting_count * 4), '-') 
+            std::string indentation_stying = get_indentation_styling();
+
+            std::cout << get_indentation_styling()
                       << entry.path().filename().string() 
                       << std::endl;
         }
@@ -54,6 +66,10 @@ void crawl_directory(const std::filesystem::path& path)
 
 int main(int argc, char* argv[]) 
 {
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+#endif
+
     // default path
     std::filesystem::path path {"TestFolder"};
 
