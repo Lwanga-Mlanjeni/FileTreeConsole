@@ -11,13 +11,10 @@
 #include <windows.h>
 #endif
 
+namespace fs = std::filesystem;
+
 int16_t directory_nesting_count{};
 
-/*
-
-|___
-
-*/
 std::string repeat_string(std::string_view string, int16_t count)
 {
     std::string result;
@@ -37,9 +34,9 @@ std::string get_indentation_styling()
     return repeat_string(indent_styling, directory_nesting_count) + "\u251C ";
 }
 
-void crawl_directory(const std::filesystem::path& path)  
+void crawl_directory(const fs::path& path)  
 {
-    for (const auto& entry : std::filesystem::directory_iterator{path})
+    for (const auto& entry : fs::directory_iterator{path})
     {
         if (entry.is_directory())
         {
@@ -69,7 +66,7 @@ int main(int argc, char* argv[])
 #endif
 
     // default path
-    std::filesystem::path path {"TestFolder"};
+    fs::path path {"TestFolder"};
 
     if (argc > 1) { path = argv[1]; }
 
