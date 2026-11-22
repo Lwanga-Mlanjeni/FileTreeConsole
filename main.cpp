@@ -15,6 +15,9 @@ namespace fs = std::filesystem;
 
 int16_t directory_nesting_count{};
 
+// for styling
+int16_t total_nesting_count{};
+
 std::string repeat_string(std::string_view string, int16_t count)
 {
     std::string result;
@@ -29,7 +32,7 @@ std::string repeat_string(std::string_view string, int16_t count)
 
 std::string get_indentation_styling()
 {
-    std::string indent_styling = "\u2502" + std::string(3, ' ') ;
+    std::string indent_styling = "\u2502" + std::string(3, ' ');
 
     return repeat_string(indent_styling, directory_nesting_count) + "\u251C ";
 }
@@ -45,6 +48,7 @@ void crawl_directory(const fs::path& path)
                       << std::endl;
 
             directory_nesting_count++;
+            total_nesting_count++;
 
             crawl_directory(entry.path());
 
@@ -70,7 +74,14 @@ int main(int argc, char* argv[])
 
     if (argc > 1) { path = argv[1]; }
 
+    std::cout << "\u256D\u2500\u25B6" << std::endl;
+
     crawl_directory(path); 
+
+    std::cout << "\u2570\u2500\u2500\u2500" 
+              << repeat_string("\u2534\u2500\u2500\u2500", --total_nesting_count) 
+              << "\u25B6" 
+              << std::endl;
 
     return 0;
 }
