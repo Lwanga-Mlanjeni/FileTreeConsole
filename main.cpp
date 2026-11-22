@@ -15,6 +15,8 @@ namespace fs = std::filesystem;
 
 int16_t directory_nesting_count{};
 
+bool is_first_directory = true;
+
 // for styling
 int16_t total_nesting_count{};
 
@@ -30,11 +32,11 @@ std::string repeat_string(std::string_view string, int16_t count)
     return result;
 }
 
-std::string get_indentation_styling()
+std::string get_indentation_styling(const std::string& dir_marker_symbol)
 {
     std::string indent_styling = "\u2502" + std::string(3, ' ');
 
-    return repeat_string(indent_styling, directory_nesting_count) + "\u251C ";
+    return repeat_string(indent_styling, directory_nesting_count) + dir_marker_symbol;
 }
 
 void crawl_directory(const fs::path& path)  
@@ -43,7 +45,7 @@ void crawl_directory(const fs::path& path)
     {
         if (entry.is_directory())
         {
-            std::cout << get_indentation_styling()
+            std::cout << (is_first_directory ? get_indentation_styling("\u256D\u2500\u25A0 ") : get_indentation_styling("\u251C\u2500\u25A0 "))
                       << entry.path().filename().string() 
                       << std::endl;
 
@@ -56,10 +58,12 @@ void crawl_directory(const fs::path& path)
         }
         else
         {
-            std::cout << get_indentation_styling()
+            std::cout << (is_first_directory ? get_indentation_styling("\u256D\u2500\u25CB ") : get_indentation_styling("\u251C\u2500\u25CB "))
                       << entry.path().filename().string() 
                       << std::endl;
         }
+
+        is_first_directory = false;
     }
 }
 
@@ -74,14 +78,7 @@ int main(int argc, char* argv[])
 
     if (argc > 1) { path = argv[1]; }
 
-    std::cout << "\u256D\u2500\u25B6" << std::endl;
-
-    crawl_directory(path); 
-
-    std::cout << "\u2570\u2500\u2500\u2500" 
-              << repeat_string("\u2534\u2500\u2500\u2500", --total_nesting_count) 
-              << "\u25B6" 
-              << std::endl;
+    crawl_directory(path);
 
     return 0;
 }
