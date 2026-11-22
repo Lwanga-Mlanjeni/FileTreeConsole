@@ -1,11 +1,21 @@
+// Going in this blindly
+// making a file tree viewer
+// No AI 
+
+/// TODO: Add error handling.
+/// TODO: Support hiding . files. Should be the default, then second arg of 'all' displays everything.
+
+/// TODO: (huge) Implement file traversal within terminal. 
+///   Should use nvim movement keys, 'l' to open directory, 'j' to go back one.
+///   Activated by some second arg, no recursion here, each termninal refresh is just a loop through current dir level.
+///   Opening directories is just a refresh with dir_iterator of the selected path.
+///    Perhaps a map is good for this? 
+///       j & k keys (up and down) (in)(de)crements a counter, l looks up the key of an items path from our map using the counter variable.
+
 #include <iostream>
 #include <cstdint>
 #include <string>
 #include <filesystem>
-
-// Going in this blindly
-// making a file tree viewer
-// No AI
 
 #ifdef _WIN32
 #include <windows.h>
