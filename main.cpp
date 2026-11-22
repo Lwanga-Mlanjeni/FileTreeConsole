@@ -55,8 +55,6 @@ void crawl_directory(const std::filesystem::path& path)
         }
         else
         {
-            std::string indentation_stying = get_indentation_styling();
-
             std::cout << get_indentation_styling()
                       << entry.path().filename().string() 
                       << std::endl;
