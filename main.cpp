@@ -17,6 +17,7 @@
 #include <string>
 #include <filesystem>
 
+// Allows us to properly display Unicode symbols on windows.
 #ifdef _WIN32
 #include <windows.h>
 #endif
