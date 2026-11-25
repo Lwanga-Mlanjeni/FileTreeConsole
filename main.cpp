@@ -2,7 +2,6 @@
 // making a file tree viewer
 // No AI 
 
-/// TODO: Add error handling.
 /// TODO: Support hiding . files. Should be the default, then second arg of 'all' displays everything.
 
 /// TODO: (huge) Implement file traversal within terminal. 
