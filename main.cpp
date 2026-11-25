@@ -88,9 +88,12 @@ int main(int argc, char* argv[])
     if (argc > 1) { path = argv[1]; }
 
     if (!std::filesystem::exists(path))
-        std::cout << "Cannot open directory " << path << ": No such file or directory" << std::endl;
-    else
-        crawl_directory(path);
+    {
+        std::cerr << "Cannot open directory " << path << ": No such file or directory" << std::endl; 
+        return 1;
+    }
+        
+    crawl_directory(path);
 
     return 0;
 }
