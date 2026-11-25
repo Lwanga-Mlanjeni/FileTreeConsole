@@ -84,12 +84,14 @@ int main(int argc, char* argv[])
     SetConsoleOutputCP(CP_UTF8);
 #endif
 
-    // default path
     fs::path path {"TestFolder"};
 
     if (argc > 1) { path = argv[1]; }
 
-    crawl_directory(path);
+    if (!std::filesystem::exists(path))
+        std::cout << "Cannot open directory " << path << ": No such file or directory" << std::endl;
+    else
+        crawl_directory(path);
 
     return 0;
 }
